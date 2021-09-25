@@ -11,13 +11,53 @@ fn signing_test() {
     let alice_signature = sign(&alice_private_key, ALICE_MESSAGE.as_bytes()).unwrap();
     let patche_signature = sign(&patche_private_key, PATCHE_MESSAGE.as_bytes()).unwrap();
 
-    assert!(verify(&alice_public_key, ALICE_MESSAGE.as_bytes(), &alice_signature).is_ok());
-    assert!(verify(&alice_public_key, ALICE_MESSAGE.as_bytes(), &patche_signature).is_err());
-    assert!(verify(&patche_public_key, ALICE_MESSAGE.as_bytes(), &alice_signature).is_err());
-    assert!(verify(&patche_public_key, ALICE_MESSAGE.as_bytes(), &patche_signature).is_err());
+    assert!(verify(
+        &alice_public_key,
+        ALICE_MESSAGE.as_bytes(),
+        &alice_signature
+    )
+    .is_ok());
+    assert!(verify(
+        &alice_public_key,
+        ALICE_MESSAGE.as_bytes(),
+        &patche_signature
+    )
+    .is_err());
+    assert!(verify(
+        &patche_public_key,
+        ALICE_MESSAGE.as_bytes(),
+        &alice_signature
+    )
+    .is_err());
+    assert!(verify(
+        &patche_public_key,
+        ALICE_MESSAGE.as_bytes(),
+        &patche_signature
+    )
+    .is_err());
 
-    assert!(verify(&patche_public_key, PATCHE_MESSAGE.as_bytes(), &patche_signature).is_ok());
-    assert!(verify(&patche_public_key, PATCHE_MESSAGE.as_bytes(), &alice_signature).is_err());
-    assert!(verify(&alice_public_key, PATCHE_MESSAGE.as_bytes(), &patche_signature).is_err());
-    assert!(verify(&alice_public_key, PATCHE_MESSAGE.as_bytes(), &alice_signature).is_err());
+    assert!(verify(
+        &patche_public_key,
+        PATCHE_MESSAGE.as_bytes(),
+        &patche_signature
+    )
+    .is_ok());
+    assert!(verify(
+        &patche_public_key,
+        PATCHE_MESSAGE.as_bytes(),
+        &alice_signature
+    )
+    .is_err());
+    assert!(verify(
+        &alice_public_key,
+        PATCHE_MESSAGE.as_bytes(),
+        &patche_signature
+    )
+    .is_err());
+    assert!(verify(
+        &alice_public_key,
+        PATCHE_MESSAGE.as_bytes(),
+        &alice_signature
+    )
+    .is_err());
 }

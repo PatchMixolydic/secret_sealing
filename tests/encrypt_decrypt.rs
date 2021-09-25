@@ -1,5 +1,5 @@
+use secret_sealing::{decrypt, encrypt};
 use std::str;
-use secret_sealing::{encrypt, decrypt};
 
 static KEY: &[u8; 32] = b"32-byte randomized key for u! :)";
 static NONCE: &[u8; 12] = b"ECONNREFUSED";
