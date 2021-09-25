@@ -21,11 +21,11 @@
 //! [SikeP751]: https://sike.org/
 
 use oqs::{
-    kem::{Algorithm, Ciphertext, Kem, SharedSecret},
+    kem::{Algorithm, Kem},
     Error as OqsError,
 };
 
-pub use oqs::kem::{PublicKey, SecretKey};
+pub use oqs::kem::{Ciphertext, PublicKey, SecretKey, SharedSecret};
 
 use crate::init_oqs_if_needed;
 
