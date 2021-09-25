@@ -9,7 +9,7 @@
 //!
 //! * Alice calls [`generate_initiator_keys`]. She sends the public key to Marisa and
 //!   keeps the private key secret.
-//! * Marisa receives Alice's public keys and calls [`create_encrypted_shared_secret`].
+//! * Marisa receives Alice's public key and calls [`create_encrypted_shared_secret`].
 //!   She sends Alice the ciphertext and keeps the shared secret secret.
 //! * Alice receives the ciphertext and calls [`decrypt_shared_secret`]. She receives
 //!   the shared secret and can now securely communicate with Marisa so long as the
