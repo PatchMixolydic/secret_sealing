@@ -1,9 +1,7 @@
 # secret_sealing
-<!--
 [![secret_sealing on crates.io](https://img.shields.io/crates/v/secret_sealing)](https://crates.io/crates/secret_sealing)
 [![Latest documentation on docs.rs](https://docs.rs/secret_sealing/badge.svg)](https://docs.rs/secret_sealing)
 ![License information for secret_sealing](https://img.shields.io/crates/l/secret_sealing)
--->
 
 A simple toolkit that provides wrappers and re-exports for modern cryptographic algorithms.
 
@@ -13,7 +11,8 @@ and because of this, the underlying libraries might have security flaws. Further
 as well as some of its constituents, have not been audited for correctness or security. In
 particular, private keys are not specifically stored in secure memory, which may pose a security
 risk if your threat model includes someone reading arbitrary memory from your machine (such as by
-a [cold boot attack]). **Use this crate at your own risk.**
+a [cold boot attack]). Therefore, this crate is more of a grounds for personal experimentation than
+anything production-ready. **Use this crate at your own risk.**
 
 ## Algorithms
 The following modules use bleeding-edge algorithms intended to be
