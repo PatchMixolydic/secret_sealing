@@ -26,20 +26,6 @@
 //! [Argon2]: https://en.wikipedia.org/wiki/Argon2
 //! [ChaCha20Poly1305]: https://datatracker.ietf.org/doc/html/rfc8439
 
-use chacha20poly1305::{
-    aead::{Aead, NewAead},
-    ChaCha20Poly1305,
-};
-use std::sync::Once;
-
-pub use argon2::{self, password_hash::Error as PasswordHashError};
-pub use blake3;
-pub use chacha20poly1305::{
-    self,
-    aead::{Error as AeadError, Payload as AeadPayload},
-};
-pub use oqs::{self, Error as OqsError};
-
 pub mod key_exchange;
 pub mod password;
 pub mod signing;
@@ -57,6 +43,20 @@ pub mod signing;
 pub mod non_password {
     pub use blake3::{derive_key, hash, keyed_hash, Hasher};
 }
+
+use chacha20poly1305::{
+    aead::{Aead, NewAead},
+    ChaCha20Poly1305,
+};
+use std::sync::Once;
+
+pub use argon2::{self, password_hash::Error as PasswordHashError};
+pub use blake3;
+pub use chacha20poly1305::{
+    self,
+    aead::{Error as AeadError, Payload as AeadPayload},
+};
+pub use oqs::{self, Error as OqsError};
 
 /// Calls [`oqs::init`] exactly once.
 ///
