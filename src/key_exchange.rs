@@ -4,16 +4,20 @@
 //! ## Usage example
 //! Alice and Marisa want to send each other love letters in the mail.
 //! However, they don't want any adversaries to be able to read them, even if they somehow
-//! acquire a quantum computer. To freely express their lesbian love, they take the
-//! following steps:
+//! acquire a quantum computer. To freely express their love, they take the following steps:
 //!
-//! * Alice calls [`generate_initiator_keys`]. She sends the public key to Marisa and
-//!   keeps the private key secret.
-//! * Marisa receives Alice's public key and calls [`create_encrypted_shared_secret`].
-//!   She sends Alice the ciphertext and keeps the shared secret secret.
+//! * Alice creates a [`KeyExchangeContext`] and calls [`generate_initiator_keys`]. She
+//!   sends the public key to Marisa and keeps the private key secret.
+//! * Marisa receives Alice's public key. She then creates a [`KeyExchangeContext`] and
+//!   calls [`create_encrypted_shared_secret`]. She sends Alice the ciphertext and keeps
+//!   the shared secret secret.
 //! * Alice receives the ciphertext and calls [`decrypt_shared_secret`]. She receives
 //!   the shared secret and can now securely communicate with Marisa so long as the
 //!   shared secret remains secret.
+//!
+//! [`generate_initiator_keys`]: KeyExchangeContext::generate_initiator_keys
+//! [`create_encrypted_shared_secret`]: KeyExchangeContext::create_encrypted_shared_secret
+//! [`decrypt_shared_secret`]: KeyExchangeContext::decrypt_shared_secret
 //!
 //! ## Algorithm
 //! This module currently uses [SikeP751] internally.
