@@ -42,6 +42,9 @@ pub fn generate_initiator_keys() -> Result<(PublicKey, SecretKey), OqsError> {
 }
 
 /// Given a public key, produce a shared secret. Step 2 in the key exchange.
+///
+/// The [`Ciphertext`] is an encrypted copy of the shared secret and should be
+/// sent to the initiator.
 pub fn create_encrypted_shared_secret(
     initiator_public_key: PublicKey,
 ) -> Result<(Ciphertext, SharedSecret), OqsError> {
