@@ -29,38 +29,58 @@ use crate::init_oqs_if_needed;
 
 pub use oqs::kem::{Ciphertext, PublicKey, SecretKey, SharedSecret};
 
-/// Creates a pair of public and private keys. Step 1 in the key exchange.
-pub fn generate_initiator_keys() -> Result<(PublicKey, SecretKey), OqsError> {
-    init_oqs_if_needed();
-    let kem = Kem::new(Algorithm::SikeP751)?;
-
-    // The `oqs` documentation shows the public key being signed.
-    // However, that's not very useful without pre-exchanging signing keys.
-    // The public key can be signed and verified outside of these functions
-    // if necessary.
-    kem.keypair()
-}
-
-/// Given a public key, produce a shared secret. Step 2 in the key exchange.
+/// A struct containing state for the key exchange algorithm.
 ///
-/// The [`Ciphertext`] is an encrypted copy of the shared secret and should be
-/// sent to the initiator.
-pub fn create_encrypted_shared_secret(
-    initiator_public_key: PublicKey,
-) -> Result<(Ciphertext, SharedSecret), OqsError> {
-    init_oqs_if_needed();
-    let kem = Kem::new(Algorithm::SikeP751)?;
-    kem.encapsulate(&initiator_public_key)
+/// Used to avoid reallocations when repeatedly performing key
+/// exchanges.
+///
+/// ## Safety
+/// This struct must be constructed with [`KeyExchangeContext::new`] so
+/// that it can initialize [`oqs`] if necessary. Otherwise, undefined
+/// behaviour may occur. This should only be a concern for unsafe code.
+pub struct KeyExchangeContext {
+    kem: Kem,
 }
 
-/// Using a private key, decrypt an encrypted shared secret. Step 3 in the key exchange.
-pub fn decrypt_shared_secret(
-    initiator_private_key: SecretKey,
-    encrypted_shared_secret: Ciphertext,
-) -> Result<SharedSecret, OqsError> {
-    init_oqs_if_needed();
-    let kem = Kem::new(Algorithm::SikeP751)?;
+impl KeyExchangeContext {
+    pub fn new() -> Result<Self, OqsError> {
+        init_oqs_if_needed();
 
-    // Produce the shared secret
-    kem.decapsulate(&initiator_private_key, &encrypted_shared_secret)
+        Ok(Self {
+            kem: Kem::new(Algorithm::SikeP751)?,
+        })
+    }
+
+    /// Creates a pair of public and private keys. Step 1 in the key exchange.
+    pub fn generate_initiator_keys(&self) -> Result<(PublicKey, SecretKey), OqsError> {
+        // The `oqs` documentation shows the public key being signed.
+        // However, that's not very useful without pre-exchanging signing keys.
+        // The public key can be signed and verified outside of these functions
+        // if necessary.
+        self.kem.keypair()
+    }
+
+    /// Given a public key, produce a shared secret. Step 2 in the key exchange.
+    ///
+    /// The [`Ciphertext`] is an encrypted copy of the shared secret and should be
+    /// sent to the initiator.
+    pub fn create_encrypted_shared_secret(
+        &self,
+        initiator_public_key: PublicKey,
+    ) -> Result<(Ciphertext, SharedSecret), OqsError> {
+        // Using the public key, create and encrypt the
+        // shared secret.
+        self.kem.encapsulate(&initiator_public_key)
+    }
+
+    /// Using a private key, decrypt an encrypted shared secret. Step 3 in the key exchange.
+    pub fn decrypt_shared_secret(
+        &self,
+        initiator_private_key: SecretKey,
+        encrypted_shared_secret: Ciphertext,
+    ) -> Result<SharedSecret, OqsError> {
+        // Decrypt and produce the shared secret.
+        self.kem
+            .decapsulate(&initiator_private_key, &encrypted_shared_secret)
+    }
 }

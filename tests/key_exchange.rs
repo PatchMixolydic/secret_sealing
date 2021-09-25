@@ -13,8 +13,11 @@ fn alice(
     ciphertext_sender: Sender<Ciphertext>,
     message_receiver: Receiver<Vec<u8>>,
 ) {
+    let context = KeyExchangeContext::new().unwrap();
     let main_public_key = public_key_receiver.recv().unwrap();
-    let (ciphertext, shared_secret) = create_encrypted_shared_secret(main_public_key).unwrap();
+    let (ciphertext, shared_secret) = context
+        .create_encrypted_shared_secret(main_public_key)
+        .unwrap();
     ciphertext_sender.send(ciphertext).unwrap();
 
     let encrypted_message = message_receiver.recv().unwrap();
@@ -33,10 +36,13 @@ fn key_exchange_test() {
     let (message_sender, message_receiver) = mpsc::channel();
     let alice = thread::spawn(|| alice(public_key_receiver, ciphertext_sender, message_receiver));
 
-    let (public_key, private_key) = generate_initiator_keys().unwrap();
+    let context = KeyExchangeContext::new().unwrap();
+    let (public_key, private_key) = context.generate_initiator_keys().unwrap();
     public_key_sender.send(public_key).unwrap();
     let ciphertext = ciphertext_receiver.recv().unwrap();
-    let shared_secret = decrypt_shared_secret(private_key, ciphertext).unwrap();
+    let shared_secret = context
+        .decrypt_shared_secret(private_key, ciphertext)
+        .unwrap();
 
     // TODO: is this correct?
     let key = derive_key(CONTEXT, shared_secret.as_ref());
