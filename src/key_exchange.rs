@@ -25,9 +25,9 @@ use oqs::{
     Error as OqsError,
 };
 
-pub use oqs::kem::{Ciphertext, PublicKey, SecretKey, SharedSecret};
-
 use crate::init_oqs_if_needed;
+
+pub use oqs::kem::{Ciphertext, PublicKey, SecretKey, SharedSecret};
 
 /// Creates a pair of public and private keys. Step 1 in the key exchange.
 pub fn generate_initiator_keys() -> Result<(PublicKey, SecretKey), OqsError> {
