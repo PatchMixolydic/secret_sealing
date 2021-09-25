@@ -5,7 +5,7 @@ license = "0BSD OR Apache-2.0"
 version = "0.1.0"
 edition = "2018"
 repository = "https://github.com/PatchMixolydic/secret_sealing"
-keywords = ["cryptography", "post-quantum", "quantum-safe", "simple", "bundle"]
+keywords = ["cryptography", "post-quantum", "quantum-safe", "SIKE", "falcon"]
 categories = ["authentication", "cryptography"]
 
 
