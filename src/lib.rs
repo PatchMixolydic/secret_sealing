@@ -71,7 +71,7 @@ fn init_oqs_if_needed() {
 /// Encrypt a given payload, such as a byte slice, using the given
 /// key and nonce.
 ///
-/// The payload can be either a byteslice or an [`AeadPayload`].
+/// The payload can be either a byte slice or an [`AeadPayload`].
 /// The difference is that the latter can carry additional associated
 /// data, which may be used to authenticate data transmitted in plaintext
 /// alongside the ciphertext and to ensure that the ciphertext only
@@ -98,7 +98,7 @@ pub fn encrypt<'msg, 'aad>(
 /// Decrypt a given payload, such as a byte slice, using the given
 /// key and nonce.
 ///
-/// The payload can be either a byteslice or an [`AeadPayload`].
+/// The payload can be either a byte slice or an [`AeadPayload`].
 /// The difference is that the latter can carry additional associated
 /// data, which may be used to authenticate data transmitted in plaintext
 /// alongside the ciphertext and to ensure that the ciphertext only
